@@ -11,20 +11,18 @@ public class UDPServer {
     public final static int BUFFER_SIZE = 1024;
 
     public static void main(String[] args) throws IOException {
-        try{
+        try(DatagramSocket serverSocket = new DatagramSocket(SERVICE_PORT)){
 
-            // Новый экземпляр сокета для ответов от клиента
-            DatagramSocket serverSoket = new DatagramSocket(SERVICE_PORT);
             // буферы для хранения отправляемых и получаемых данных
             byte[] receivingDataBuffer = new byte[BUFFER_SIZE];
-            byte[] sendingDataBuffer = new byte[BUFFER_SIZE];
+            byte[] sendingDataBuffer;// = new byte[BUFFER_SIZz E];
 
             // экземпляр UDP пакета для хранения клиентских данных
             DatagramPacket inputPacket = new DatagramPacket(receivingDataBuffer, receivingDataBuffer.length);
             System.out.println("Waiting for a client to connect...");
             while(true) {
                 // получить данные от клиента и сохранить их
-                serverSoket.receive(inputPacket);
+                serverSocket.receive(inputPacket);
 
                 // вывести на экран отправленные клиентом данные
                 String receivedData = new String(inputPacket.getData());
@@ -42,10 +40,10 @@ public class UDPServer {
                         sendingDataBuffer, sendingDataBuffer.length,
                         senderAddress, senderPort);
                 // отправить пакет клиенту
-                serverSoket.send(outputPacket);
+                serverSocket.send(outputPacket);
             }
             // закрыть соединение
-            //serverSoket.close();
+            //serverSocket.close();
 
         } catch (SocketException e){
             e.printStackTrace();

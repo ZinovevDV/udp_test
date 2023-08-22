@@ -15,12 +15,11 @@ public class UDPClient {
     public final static String TEST_MESSAGE = "Hello from UDP client";
 
     public static void main(String[] args) throws IOException {
-        try{
-            DatagramSocket clientSocket = new DatagramSocket();
+        try(DatagramSocket clientSocket = new DatagramSocket()){
 
             // получаем адрес сервера
             InetAddress IPAddress = InetAddress.getByName(SERVER_NAME);
-            // создаем буфферы
+            // создаем буферы
             byte[] sendingDataBuffer = new byte[BUFFER_SIZE];
             byte[] receivingDataBuffer = new byte[BUFFER_SIZE];
 
@@ -43,7 +42,7 @@ public class UDPClient {
             String receivedData = new String(receivingPacket.getData());
             System.out.println("Sent from the server: " + receivedData);
             // закрыть соединение
-            clientSocket.close();
+            //clientSocket.close();
         }
         catch (SocketException e){
             e.printStackTrace();
